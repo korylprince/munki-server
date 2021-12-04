@@ -90,7 +90,7 @@ func RunServer() error {
 				Logger:     logger,
 			}))
 
-	var handler http.Handler = mux
+	var handler http.Handler = LogHandler(NewLogger(os.Stdout), mux)
 
 	// rewrite for x-forwarded-for, etc headers
 	if config.ProxyHeaders {
@@ -99,8 +99,7 @@ func RunServer() error {
 
 	log.Println("Listening on:", config.ListenAddr)
 
-	return http.ListenAndServe(config.ListenAddr,
-		LogHandler(NewLogger(os.Stdout), handler))
+	return http.ListenAndServe(config.ListenAddr, handler)
 }
 
 func main() {
