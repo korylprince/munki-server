@@ -1,0 +1,11 @@
+linters:
+  enable:
+    - revive
+linters-settings:
+  errcheck:
+    exclude-functions:
+      - (net/http.ResponseWriter).Write
+issues:
+  include:
+    - EXC0012
+    - EXC0014

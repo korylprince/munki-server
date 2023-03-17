@@ -1,16 +1,16 @@
-FROM golang:1.17-alpine as builder
-
-ARG VERSION
+FROM golang:1-alpine as builder
 
 RUN go install github.com/korylprince/fileenv@v1.1.0
-RUN go install "github.com/korylprince/munki-server@$VERSION"
 
+FROM alpine:latest
 
-FROM alpine:3.15
+ARG GO_PROJECT_NAME
+ENV GO_PROJECT_NAME=${GO_PROJECT_NAME}
 
 RUN apk add --no-cache ca-certificates
 
 COPY --from=builder /go/bin/fileenv /
-COPY --from=builder /go/bin/munki-server /
+COPY docker-entrypoint.sh /
+COPY ${GO_PROJECT_NAME} /
 
-CMD ["/fileenv", "/munki-server"]
+CMD ["/fileenv", "/docker-entrypoint.sh"]

@@ -87,4 +87,4 @@ Normal clients would receive a generated manifest with site_common as an include
 
 munki-server is intended to be deployed behind a reverse proxy with TLS termination (e.g. traefik, nginx, etc). Don't forget to set PROXYHEADERS to true if doing so.
 
-There's a prebuilt Docker container at `korylprince/munki-server:<tagged version>`.
+There's a prebuilt Docker container at `ghcr.io/korylprince/munki-server:<tagged version>`.
