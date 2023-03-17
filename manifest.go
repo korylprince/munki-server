@@ -9,11 +9,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Defaults is the default configuration
 type Defaults struct {
 	Catalogs  []string `yaml:"catalogs"`
 	Manifests []string `yaml:"manifests"`
 }
 
+// Device is the device-specific configuration
 type Device struct {
 	Name             string   `yaml:"name"`
 	ClientIdentifier string   `yaml:"client_identifier"`
@@ -27,6 +29,7 @@ type Assignments struct {
 	Devices   []*Device `yaml:"devices"`
 }
 
+// NewAssignments parses Assignments from path
 func NewAssignments(path string) (*Assignments, error) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -90,6 +93,7 @@ func (a *Assignments) Manifest(id string) ([]byte, error) {
 	return plist.MarshalIndent(d, "\t")
 }
 
+// ManifestHandler returns the manifest to the client
 func ManifestHandler(rootPath, assignmentPath string) http.Handler {
 	fs := NoIndexFileSystem{http.Dir(rootPath)}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

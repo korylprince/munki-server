@@ -1,5 +1,6 @@
 package main
 
+// Config configures munki-server
 type Config struct {
 	// Webroot is the path to the root directory served by the file and webdav servers
 	WebRoot string `required:"true"`

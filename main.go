@@ -28,6 +28,10 @@ func (fs NoIndexFileSystem) Open(filepath string) (http.File, error) {
 	}
 
 	s, err := f.Stat()
+	if err != nil {
+		return nil, err
+	}
+
 	if s.IsDir() {
 		index := path.Join(filepath, "index.html")
 		if _, err := fs.FileSystem.Open(index); err != nil {
@@ -48,6 +52,7 @@ func logger(r *http.Request, err error) {
 	}
 }
 
+// RunServer starts the server
 func RunServer() error {
 	config := new(Config)
 	err := envconfig.Process("", config)
@@ -90,7 +95,7 @@ func RunServer() error {
 				Logger:     logger,
 			}))
 
-	var handler http.Handler = LogHandler(NewLogger(os.Stdout), mux)
+	var handler = LogHandler(NewLogger(os.Stdout), mux)
 
 	// rewrite for x-forwarded-for, etc headers
 	if config.ProxyHeaders {
